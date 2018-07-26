@@ -1,10 +1,11 @@
 <?php
-namespace Test\Routeur;
+namespace Test\Router;
 
 use PHPUnit\Framework\TestCase;
 
-require_once('Router/Route.php');
-use Router\Route;
+require_once 'RouteForTest.php';
+
+use Test\Router\RouteForTest as Route;
 
 class RouteTest extends TestCase
 {
@@ -32,15 +33,23 @@ class RouteTest extends TestCase
           $this->assertFalse($route->match('/foo'));
     }
 
-    public function testMatchWithParam():void
+    public function testMatchOkWithParam():void
     {
             $route = new Route('id/:id', null);
             $this->assertTrue($route->match('/id/12'));
     }
 
-    public function testMatchWithTSeveralParams():void
+    public function testMatchOkWithTSeveralParams():void
     {
               $route = new Route('id/:id/:foo', null);
               $this->assertTrue($route->match('/id/12/machin'));
+    }
+
+    public function testMatchRecordMatches():void
+    {
+              $route = new Route('id/:id/:slug', null);
+              $route->match('/id/12/foo');
+              $this->assertEquals($route->getMatches()[0], 12 );
+              $this->assertEquals($route->getMatches()[1], 'foo' );
     }
 }
