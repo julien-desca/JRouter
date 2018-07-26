@@ -16,6 +16,9 @@ class Router {
     {
       $route = new RouteCallable($path, $callable);
     }
+    else if(gettype($callable) === 'string'){
+      $route = new RouteString($path, $callable);
+    }
     $this->routes["GET"][] = $route;
     return $route;
   }
