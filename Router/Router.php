@@ -7,22 +7,23 @@ class Router {
 
   private $routes = [];
 
-  public function __construct($url){
+  public function __construct(string $url){
     $this->url = $url;
   }
 
-  public function get($path, $callable){
+  public function get(string $path, callable $callable):Route{
     $route = new Route($path, $callable);
     $this->routes["GET"][] = $route;
     return $route;
   }
 
   public function run(){
-    if(!isset($this->routes[$_SERVER['REQUEST_METHOD']]))
+    $method = $_SERVER['REQUEST_METHOD'];
+    if(!isset($this->routes[$method]))
     {
-      throw new RouterException("INVALID METHOD");
+      throw new RouterException("invalid method");
     }
-    foreach($this->routes[$_SERVER['REQUEST_METHOD']] as $route){
+    foreach($this->routes[$method] as $route){
       if($route->match($this->url)){
         return $route->call();
       }
@@ -30,7 +31,7 @@ class Router {
      throw new RouterException('No matching routes');
   }
 
-  public function getRoute():[] {
+  public function getRoute():array {
     return $this->routes;
   }
 }
