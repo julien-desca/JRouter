@@ -2,7 +2,7 @@
 namespace Router;
 
 class Route{
-  
+
   public $path;
   public $callable;
   protected $matches; //var protected for unit testing

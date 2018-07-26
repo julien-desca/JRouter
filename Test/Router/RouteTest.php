@@ -4,7 +4,6 @@ namespace Test\Router;
 use PHPUnit\Framework\TestCase;
 
 require_once 'RouteForTest.php';
-
 use Test\Router\RouteForTest as Route;
 
 class RouteTest extends TestCase

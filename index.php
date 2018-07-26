@@ -8,4 +8,5 @@ spl_autoload_register(function ($class_name) {
 $routeur = new Router\Router($_GET['url']);
 //TODO declare route here
 $routeur->get('', function(){echo "welcome to my page";});
+$routeur->get('hero/:id', function($id){echo $id;});
 $routeur->run();
