@@ -26,6 +26,18 @@ class RouteTest extends TestCase
           $this->assertTrue($route->match('/home'));
     }
 
+    public function testMatchOkWithPathEndingWithSeparator():void
+    {
+          $route = new Route('home/', null);
+          $this->assertTrue($route->match('/home'));
+    }
+
+    public function testMatchOkWithPathEndingAndStartingWithSeparator():void
+    {
+          $route = new Route('/home/', null);
+          $this->assertTrue($route->match('/home'));
+    }
+
     public function testMatchNoMatchingUrl():void
     {
           $route = new Route('home', null);
