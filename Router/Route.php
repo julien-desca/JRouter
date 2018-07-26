@@ -1,13 +1,13 @@
 <?php
 namespace Router;
 
-class Route{
+abstract class Route{
 
   public $path;
   public $callable;
-  protected $matches; //var protected for unit testing
+  protected $matches = []; //var protected for unit testing
 
-  public function __construct($path, $callable)
+  public function __construct(string $path, $callable)
   {
     $this->path = $path;
     $this->callable = $callable;
@@ -29,12 +29,12 @@ class Route{
       return true;
   }
 
-  /**
-   * call the action
-   */
-  public function call(){
-    return call_user_func_array($this->callable, $this->matches);
+  public function call()
+  {
+    //to override
+    throw new \Exception('You cannot call this method. you have to override it');
   }
+
 }
 
 /*

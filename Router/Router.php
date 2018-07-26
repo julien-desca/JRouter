@@ -11,8 +11,11 @@ class Router {
     $this->url = $url;
   }
 
-  public function get(string $path, callable $callable):Route{
-    $route = new Route($path, $callable);
+  public function get(string $path, $callable):Route{
+    if(is_callable($callable))
+    {
+      $route = new RouteCallable($path, $callable);
+    }
     $this->routes["GET"][] = $route;
     return $route;
   }
