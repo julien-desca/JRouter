@@ -14,7 +14,7 @@ class Router {
   public function get($path, $callable){
     $route = new Route($path, $callable);
     $this->routes["GET"][] = $route;
-    return $route; // On retourne la route pour "enchainer" les méthodes
+    return $route;
   }
 
   public function run(){
