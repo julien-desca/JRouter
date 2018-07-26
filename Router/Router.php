@@ -5,7 +5,7 @@ class Router {
 
   private $url;
 
-  private $routes = [];
+  protected $routes = [];
 
   public function __construct(string $url){
     $this->url = $url;
@@ -31,7 +31,4 @@ class Router {
      throw new RouterException('No matching routes');
   }
 
-  public function getRoute():array {
-    return $this->routes;
-  }
 }
