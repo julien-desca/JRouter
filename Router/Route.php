@@ -3,13 +3,15 @@ namespace Router;
 
 abstract class Route{
 
-  public $path;
-  public $callable;
+  protected $path;
+
+  protected $callable;
+
   protected $matches = []; //var protected for unit testing
 
   public function __construct(string $path, $callable)
   {
-    $this->path = $path;
+    $this->path = trim($path, '/');
     $this->callable = $callable;
   }
 
@@ -36,16 +38,3 @@ abstract class Route{
   }
 
 }
-
-/*
-//TODO
-Les expressions régulières ne sont pas Tip top, pour un / ses logiquement /, et idem pour le regex de path /^posts/([^/])$/ on obtient une erreur et il faut donc ajouter à notre regex un \ pour être dans les normes de regex.
-
-Pour les personnes intéressées régler ce petit souci et très simple.
-
-Dans la fonction match(); de Route.php, il vous faut mettre après les premières variables qui sont : $url = trim($url, '/'); $path = preg_replace_callback('/:([\w]+)/', [$this, 'paramMatch'], $this->path);
-
-Ajouté en dessous : $path = str_replace('/', '/', $path);
-
-Voilà
- */
