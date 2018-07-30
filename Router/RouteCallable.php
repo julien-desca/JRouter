@@ -2,6 +2,11 @@
 
 namespace Router;
 
+/**
+ * Route which call a callable action
+ * Class RouteCallable
+ * @package Router
+ */
 class RouteCallable extends Route{
 
     /**

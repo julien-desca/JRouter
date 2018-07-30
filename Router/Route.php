@@ -1,40 +1,70 @@
 <?php
+
 namespace Router;
 
-abstract class Route{
+/**
+ * Base class for route. A route can be create to call a callable or to call an action method of a controller
+ * Class Route
+ * @package Router
+ */
+abstract class Route
+{
 
-  protected $path;
+    /**
+     * Path of the route
+     * @var string
+     */
+    protected $path;
 
-  protected $callable;
+    /**
+     * action to call
+     * @var callable|string
+     */
+    protected $callable;
 
-  protected $matches = []; //var protected for unit testing
+    /**
+     * param of the request
+     * @var array
+     */
+    protected $matches = []; //var protected for unit testing
 
-  public function __construct(string $path, $callable)
-  {
-    $this->path = trim($path, '/');
-    $this->callable = $callable;
-  }
+    /**
+     * Route constructor.
+     * @param string $path Path of the route
+     * @param callable|string $callable  action to call
+     */
+    public function __construct(string $path, $callable)
+    {
+        $this->path = trim($path, '/');
+        $this->callable = $callable;
+    }
 
-  /**
-  * Permettra de capturer l'url avec les paramètre
-  * get('/posts/:slug-:id') par exemple
-  **/
-  public function match($url){
-      $url = trim($url, '/');
-      $path = preg_replace('#:([\w]+)#', '([^/]+)', $this->path);
-      $regex = "#^$path$#";
-      if(!preg_match($regex, $url, $matches)){
-          return false;
-      }
-      array_shift($matches);
-      $this->matches = $matches;  // On sauvegarde les paramètre dans l'instance pour plus tard
-      return true;
-  }
+    /**
+     * look if $url matches to route
+     * @param $url
+     * @return bool
+     */
+    public function match($url)
+    {
+        $url = trim($url, '/');
+        $path = preg_replace('#:([\w]+)#', '([^/]+)', $this->path);
+        $regex = "#^$path$#";
+        if (!preg_match($regex, $url, $matches)) {
+            return false;
+        }
+        array_shift($matches);
+        $this->matches = $matches;  // On sauvegarde les paramètre dans l'instance pour plus tard
+        return true;
+    }
 
-  public function call()
-  {
-    //to override
-    throw new \Exception('You cannot call this method. you have to override it');
-  }
+    /**
+     * call the route action
+     * @throws \Exception
+     */
+    public function call()
+    {
+        //to override
+        throw new \Exception('You cannot call this method. you have to override it');
+    }
 
 }

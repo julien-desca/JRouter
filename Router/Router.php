@@ -1,40 +1,66 @@
 <?php
+
 namespace Router;
 
-class Router {
+/**
+ * call the right action for requested url
+ * Class Router
+ * @package Router
+ */
+class Router
+{
+    /**
+     * requested url
+     * @var string
+     */
+    private $url;
 
-  private $url;
+    /**
+     * Registered Routes
+     * @var array
+     */
+    protected $routes = [];
 
-  protected $routes = [];
-
-  public function __construct(string $url){
-    $this->url = $url;
-  }
-
-  public function get(string $path, $callable):Route{
-    if(is_callable($callable))
+    public function __construct(string $url)
     {
-      $route = new RouteCallable($path, $callable);
+        $this->url = $url;
     }
-    else if(gettype($callable) === 'string'){
-      $route = new RouteString($path, $callable);
-    }
-    $this->routes["GET"][] = $route;
-    return $route;
-  }
 
-  public function run(){
-    $method = $_SERVER['REQUEST_METHOD'];
-    if(!isset($this->routes[$method]))
+    /**
+     * Register a new route with GET method
+     * @param string $path path of the route
+     * @param callable|string $callable callable to call when route match or controller class "/Full/Name/Controller@actionMethod"
+     * @return Route
+     */
+    public function get(string $path, $callable): Route
     {
-      throw new RouterException("invalid method");
+        if (is_callable($callable)) {
+            $route = new RouteCallable($path, $callable);
+        } else if (gettype($callable) === 'string') {
+            $route = new RouteString($path, $callable);
+        }
+        $this->routes["GET"][] = $route;
+        return $route;
     }
-    foreach($this->routes[$method] as $route){
-      if($route->match($this->url)){
-        return $route->call();
-      }
+
+
+    /**
+     * Run the application
+     * @return mixed
+     * @throws RouterException
+     */
+    public function run()
+    {
+        $method = $_SERVER['REQUEST_METHOD'];
+        if (!isset($this->routes[$method])) {
+            throw new RouterException("invalid method");
+        }
+        foreach ($this->routes[$method] as $route) {
+            if ($route->match($this->url)) {
+                return $route->call();
+            }
+        }
+        throw new RouterException('No matching routes');
     }
-     throw new RouterException('No matching routes');
-  }
 
 }
