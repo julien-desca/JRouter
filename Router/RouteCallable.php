@@ -17,7 +17,7 @@ class RouteCallable extends Route{
         return call_user_func_array($this->callable, $this->matches);
       }
       catch(\ArgumentCountError $e){
-        throw new RouterException("Inval argument count.");
+        throw new RouterException($e->getMessage());
       }
     }
 }

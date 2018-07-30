@@ -30,16 +30,51 @@ class Router
      * Register a new route with GET method
      * @param string $path path of the route
      * @param callable|string $callable callable to call when route match or controller class "/Full/Name/Controller@actionMethod"
-     * @return Route
+     * @return Route created Route
+     * @throws RouterException
      */
     public function get(string $path, $callable): Route
     {
+        $route = $this->createRoute($path, $callable);
+        $this->routes["GET"][] = $route;
+        return $route;
+    }
+
+    /**
+     * Register a new route with POST method
+     * @param string $path path of the route
+     * @param callable|string $callable callable to call when route match or controller class "/Full/Name/Controller@actionMethod"
+     * @return Route created Route
+     * @throws RouterException
+     */
+    public function post(string $path, $callable){
+        $route = $this->createRoute($path, $callable);
+        $this->routes["POST"][] = $route;
+        return $route;
+    }
+
+    public function put(string $path, $callable){
+        $route = $this->createRoute($path, $callable);
+        $this->routes["PUT"][] = $route;
+        return $route;
+    }
+
+    public function delete(string $path, $callable){
+        $route = $this->createRoute($path, $callable);
+        $this->routes["DELETE"][] = $route;
+        return $route;
+    }
+
+    private function createRoute(string $path, $callable):Route{
+        $route = null;
         if (is_callable($callable)) {
             $route = new RouteCallable($path, $callable);
         } else if (gettype($callable) === 'string') {
             $route = new RouteString($path, $callable);
         }
-        $this->routes["GET"][] = $route;
+        else{
+            throw new RouterException("bad callable type!");
+        }
         return $route;
     }
 

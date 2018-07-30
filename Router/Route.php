@@ -54,6 +54,10 @@ abstract class Route
         }
         array_shift($matches);
         $this->matches = $matches;  // On sauvegarde les paramètre dans l'instance pour plus tard
+        $post = json_decode(file_get_contents('php://input'), true);
+        if(!empty($post)){
+            $this->matches[] = $post;
+        }
         return true;
     }
 

@@ -30,7 +30,7 @@ class RouteString extends Route{
     try{
        $controller = new $controllerName();
        $reflectionMethod = new \ReflectionMethod($controllerName, $methodName);
-       return $reflectionMethod->invoke($controller, ...array_merge($this->matches, $_POST));
+       return $reflectionMethod->invoke($controller, ...$this->matches);
     }
     catch(\ArgumentCountError $e){
       throw new RouterException("Inval argument count.");
