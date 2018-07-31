@@ -5,7 +5,9 @@ use PHPUnit\Framework\TestCase;
 
 require_once 'RouteString_ForTest.php';
 require_once 'FakeController.php';
-require_once'Router/RouterException.php';
+require_once 'Router/Exception/BadCallException.php';
+
+use Router\Exception\BadCallException;
 use Test\Router\RouteString_ForTest as RouteString;
 
 class RouteStringTest extends TestCase
@@ -36,7 +38,7 @@ class RouteStringTest extends TestCase
         {
             $route = new RouteString('home/:id', "Test\Routeur\FakeController@indexWithParams" );
             $route->setMatches([41]);
-            $this->expectException(\Router\RouterException::class);
+            $this->expectException(BadCallException::class);
             $route->call();
         }
 }

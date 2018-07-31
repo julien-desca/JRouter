@@ -3,7 +3,7 @@
 namespace Router;
 use Router\Exception\MethodNotAllowedException;
 use Router\Exception\RouterException;
-use Routeur\Exception\RouteNotFoundException;
+use Router\Exception\RouteNotFoundException;
 
 /**
  * call the right action for requested url

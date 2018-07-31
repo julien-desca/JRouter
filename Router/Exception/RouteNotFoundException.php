@@ -1,8 +1,6 @@
 <?php
 
-namespace Routeur\Exception;
-
-use Router\Exception\RouterException;
+namespace Router\Exception;
 
 class RouteNotFoundException extends RouterException{
 

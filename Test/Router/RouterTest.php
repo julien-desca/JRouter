@@ -5,18 +5,18 @@ use PHPUnit\Framework\TestCase;
 
 require_once 'RouterForTest.php';
 require_once 'Router/Route.php';
+use Router\Route;
 require_once 'Router/RouteCallable.php';
 
 require_once 'Router/Exception/RouterException.php';
 require_once 'Router/Exception/MethodNotAllowedException.php';
 use Router\Exception\MethodNotAllowedException;
-require_once 'Router\Exception\RouteNotFoundException.php';
-use Routeur\Exception\RouteNotFoundException;
+
+require_once 'Router/Exception/RouteNotFoundException.php';
+use Router\Exception\RouteNotFoundException;
 
 use Test\Router\RouterForTest as Router;
 
-require_once 'Router/Route.php';
-use Router\Route;
 
 
 class RouterTest extends TestCase
