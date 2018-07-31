@@ -1,6 +1,9 @@
 <?php
 
 namespace Router;
+use Router\Exception\MethodNotAllowedException;
+use Router\Exception\RouterException;
+use Routeur\Exception\RouteNotFoundException;
 
 /**
  * call the right action for requested url
@@ -53,18 +56,39 @@ class Router
         return $route;
     }
 
+    /**
+     * Register a new route with PUT method
+     * @param string $path
+     * @param $callable
+     * @return Route
+     * @throws RouterException
+     */
     public function put(string $path, $callable){
         $route = $this->createRoute($path, $callable);
         $this->routes["PUT"][] = $route;
         return $route;
     }
 
+    /**
+     * Register a new route with DELETE method
+     * @param string $path
+     * @param $callable
+     * @return Route
+     * @throws RouterException
+     */
     public function delete(string $path, $callable){
         $route = $this->createRoute($path, $callable);
         $this->routes["DELETE"][] = $route;
         return $route;
     }
 
+    /**
+     * Instantiate Route
+     * @param string $path
+     * @param $callable
+     * @return Route
+     * @throws RouterException
+     */
     private function createRoute(string $path, $callable):Route{
         $route = null;
         if (is_callable($callable)) {
@@ -82,20 +106,21 @@ class Router
     /**
      * Run the application
      * @return mixed
-     * @throws RouterException
+     * @throws MethodNotAllowedException
+     * @throws RouteNotFoundException
      */
     public function run()
     {
         $method = $_SERVER['REQUEST_METHOD'];
         if (!isset($this->routes[$method])) {
-            throw new RouterException("invalid method");
+            throw new MethodNotAllowedException('METHOD : ' . $method . ' is not allowed');
         }
         foreach ($this->routes[$method] as $route) {
             if ($route->match($this->url)) {
                 return $route->call();
             }
         }
-        throw new RouterException('No matching routes');
+        throw new RouteNotFoundException('No matching routes');
     }
 
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace Router;
+use Router\Exception\BadCallException;
 
 /**
  * Route which call a controller action
@@ -12,15 +13,14 @@ class RouteString extends Route{
     /**
      * call the catio n
      * @return mixed|void
-     * @throws RouterException
-     * @throws \ReflectionException
+     * @throws BadCallException
      */
   public function call(){
     if(!isset($this->callable)){
-      throw new RouteException("No Action Set.");
+      throw new BadCallException("No Action Set.");
     }
     if(!strpos($this->callable, "@")){ //a regex could be better @TODO
-        throw new RouteException("Bad Syntax Action Set.");
+        throw new BadCallException("Bad Syntax Action Set.");
     }
     $controllerName = '';
     $methodName = '';
@@ -33,7 +33,10 @@ class RouteString extends Route{
        return $reflectionMethod->invoke($controller, ...$this->matches);
     }
     catch(\ArgumentCountError $e){
-      throw new RouterException("Inval argument count.");
+      throw new BadCallException("Inval argument count.");
+    }
+    catch (\ReflectionException $e){
+        throw new BadCallException("Reflection Exception");
     }
   }
 }

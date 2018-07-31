@@ -2,6 +2,8 @@
 
 namespace Router;
 
+use Router\Exception\RouterException;
+
 /**
  * Base class for route. A route can be create to call a callable or to call an action method of a controller
  * Class Route
@@ -68,7 +70,7 @@ abstract class Route
     public function call()
     {
         //to override
-        throw new \Exception('You cannot call this method. you have to override it');
+        throw new RouterException('You cannot call this method. you have to override it');
     }
 
 }
