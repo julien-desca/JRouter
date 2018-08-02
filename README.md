@@ -33,9 +33,12 @@ $router = new \JDesca\Router\Router($_GET['url']);
 try {
     //you can pass a string like Controller@action
     $router->get('your/path', 'Full\Name\To\Controller@actionMethod');
+    
+    //or you can also pass a callable
     $router->get('your/path/function', function () {  //:foo for parameters
         echo "foo !!!";
     });
+    
     //eventually with parameters
     $router->get('your/path/:id', function ($id) {  //:foo for parameters
         echo ":id paramater is equal to : $id";
@@ -56,7 +59,6 @@ try {
 } catch (\JDesca\Router\Exception\RouterException $e) {
 } catch (\Exception $e){
 }
-//or you can also pass a callable
 
 class TestController{
     public function testGetWithParam($id){
