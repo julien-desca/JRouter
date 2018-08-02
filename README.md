@@ -1,6 +1,6 @@
 ### 1. Installation
 
- - with Composer : add to your composer.json
+ - with Composer :
  
  
  ```
