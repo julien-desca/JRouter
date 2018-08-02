@@ -4,7 +4,7 @@
  
  
  ```
- composer --require julien-desca/router
+ composer require julien-desca/router dev-master
 ```
 
 
