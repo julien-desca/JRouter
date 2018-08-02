@@ -1,5 +1,11 @@
 {
     "require-dev": {
         "phpunit/phpunit": "^7.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "JDesca\\Router\\": "src/",
+            "Test\\Router\\": "Test/src"
+        }
     }
 }
