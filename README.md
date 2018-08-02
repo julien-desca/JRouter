@@ -3,19 +3,8 @@
  - with Composer : add to your composer.json
  
  
- ```json
-"require": {
-		"julien-desca/router" : "dev-master"
-	}
-	
-	...
-	
-	"repositories": [
-		{
-			"type": "vcs",
-			"url": "https://github.com/julien-desca/Router.git"
-		}
-	]
+ ```
+ composer --require julien-desca/router
 ```
 
 
