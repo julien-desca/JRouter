@@ -1,4 +1,5 @@
 {
+	"name": "julien-desca/router"
     "require-dev": {
         "phpunit/phpunit": "^7.2"
     },
