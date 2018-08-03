@@ -4,6 +4,8 @@ namespace Test\Router;
 use JDesca\Router\Exception\MethodNotAllowedException;
 use JDesca\Router\Exception\RouteNotFoundException;
 use JDesca\Router\Route;
+use JDesca\Router\RouteCallable;
+use JDesca\Router\RouteString;
 use PHPUnit\Framework\TestCase;
 
 use Test\Router\RouterForTest as Router;
@@ -30,6 +32,14 @@ class RouterTest extends TestCase
         $router->get('', function(){return 'foo';});
         $router->get('live/test/', function(){return null;});
         $this->assertEquals(count($router->getRoutes()["GET"]), 2);
+    }
+
+    public function testGetManyRouteWithSameNameRaiseException():void
+    {
+        $router = new Router("/foo/foufou");
+        $this->expectException(\Exception::class);
+        $router->get('', function(){return 'foo';}, 'test');
+        $router->get('live/test/', function(){return null;}, 'test');
     }
 
     public function testPost():void{
@@ -84,5 +94,42 @@ class RouterTest extends TestCase
       $_SERVER['REQUEST_METHOD'] = "POST";
       $this->expectException(MethodNotAllowedException::class);
       $router->run();
+    }
+
+    public function testGetRoutePath(){
+        $router = new Router("Route/to/nowhere");
+        $router->setRoutes(
+            [ "GET" =>
+                [
+                    'foo' => new RouteString('/', '', 'foo'),
+                    'foo2' => new RouteCallable('/foo/foo', null, 'foo2'),
+                ],
+                "POST" =>
+                [
+                    'fooPost' => new RouteString('/', '', 'fooPost'),
+                    'foo2Post' => new RouteCallable('/foo', null, 'foo2Post'),
+                ]
+            ]
+        );
+        $this->assertEquals("/foo/foo/", $router->getRoutePath('foo2'));
+    }
+
+    public function testGetRoutePathRaiseException(){
+    $router = new Router("Route/to/nowhere");
+        $router->setRoutes(
+            [ "GET" =>
+                [
+                    'foo' => new RouteString('/', '', 'foo'),
+                    'foo2' => new RouteCallable('/foo', null, 'foo2'),
+                ],
+                "POST" =>
+                    [
+                        'fooPost' => new RouteString('/', '', 'fooPost'),
+                        'foo2Post' => new RouteCallable('/foo', null, 'foo2Post'),
+                    ]
+            ]
+        );
+    $this->expectException(RouteNotFoundException::class);
+    $router->getRoutePath('test');
     }
 }

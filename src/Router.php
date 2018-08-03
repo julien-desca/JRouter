@@ -140,15 +140,24 @@ class Router
         throw new RouteNotFoundException('No matching routes');
     }
 
+    /**
+     * @param string $routeName
+     * @return string
+     * @throws RouteNotFoundException
+     */
     public function getRoutePath(string $routeName):string{
          foreach ($this->routes as $route){
              if(array_key_exists($routeName, $route)){
-                 return $route[$routeName]->getPath();
+                 return  $route[$routeName]->getPath();
              }
          }
          throw new RouteNotFoundException("no route named $routeName found");
     }
 
+    /**
+     * @param $name
+     * @throws \Exception
+     */
     private function checkRouteNotExists($name):void
     {
         if(!$name){
