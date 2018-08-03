@@ -12,9 +12,16 @@ class RouterTest extends TestCase
 {
     public function testGet(): void
     {
-      $router = new Router("/foo/foufou");
-      $router->get('', function(){return 'foo';});
-      $this->assertNotEmpty($router->getRoutes()['GET']);
+        $router = new Router("/foo/foufou");
+        $router->get('', function(){return 'foo';});
+        $this->assertNotEmpty($router->getRoutes()['GET']);
+    }
+
+    public function testGetNamedRoute(): void
+    {
+        $router = new Router("/foo/foufou");
+        $router->get('', function(){return 'foo';}, 'test');
+        $this->assertNotEmpty($router->getRoutes()['GET']['test']);
     }
 
     public function testGetManyRoutes():void
