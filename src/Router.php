@@ -1,6 +1,7 @@
 <?php
 
 namespace JDesca\Router;
+
 use JDesca\Router\Exception\MethodNotAllowedException;
 use JDesca\Router\Exception\RouterException;
 use JDesca\Router\Exception\RouteNotFoundException;
@@ -24,6 +25,8 @@ class Router
      */
     protected $routes = [];
 
+    private $allowedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
+
     public function __construct(string $url)
     {
         $this->url = $url;
@@ -33,13 +36,14 @@ class Router
      * Register a new route with GET method
      * @param string $path path of the route
      * @param callable|string $callable callable to call when route match or controller class "/Full/Name/Controller@actionMethod"
+     * @param null|string $name
      * @return Route created Route
      * @throws RouterException
      */
-    public function get(string $path, $callable, ?string $name=null): Route
+    public function get(string $path, $callable, ?string $name = null): Route
     {
         $route = $this->createRoute($path, $callable, $name);
-        $this->routes["GET"][] = $route;
+        $this->registerRoute("GET", $route, $name);
         return $route;
     }
 
@@ -50,9 +54,10 @@ class Router
      * @return Route created Route
      * @throws RouterException
      */
-    public function post(string $path, $callable, ?string $name=null){
+    public function post(string $path, $callable, ?string $name = null)
+    {
         $route = $this->createRoute($path, $callable, $name);
-        $this->routes["POST"][] = $route;
+        $this->registerRoute("POST", $route, $name);
         return $route;
     }
 
@@ -63,9 +68,10 @@ class Router
      * @return Route
      * @throws RouterException
      */
-    public function put(string $path, $callable, ?string $name=null){
+    public function put(string $path, $callable, ?string $name = null)
+    {
         $route = $this->createRoute($path, $callable, $name);
-        $this->routes["PUT"][] = $route;
+        $this->registerRoute("PUT", $route, $name);
         return $route;
     }
 
@@ -76,9 +82,10 @@ class Router
      * @return Route
      * @throws RouterException
      */
-    public function delete(string $path, $callable, ?string $name=null){
+    public function delete(string $path, $callable, ?string $name = null)
+    {
         $route = $this->createRoute($path, $callable, $name);
-        $this->routes["DELETE"][] = $route;
+        $this->registerRoute("DELETE", $route, $name);
         return $route;
     }
 
@@ -89,17 +96,27 @@ class Router
      * @return Route
      * @throws RouterException
      */
-    private function createRoute(string $path, $callable, ?string $name=null):Route{
+    private function createRoute(string $path, $callable, ?string $name = null): Route
+    {
         $route = null;
         if (is_callable($callable)) {
             $route = new RouteCallable($path, $callable, $name);
         } else if (gettype($callable) === 'string') {
-            $route = new RouteString($path, $callable,  $name);
-        }
-        else{
+            $route = new RouteString($path, $callable, $name);
+        } else {
             throw new RouterException("bad callable type!");
         }
         return $route;
+    }
+
+    /**
+     * @param string $method
+     * @param Route $route
+     * @param null|string $name
+     */
+    private function registerRoute(string $method, Route $route, ?string $name = null)
+    {
+        $name ? $this->routes[$method][$name] = $route : $this->routes[$method][] = $route;
     }
 
 

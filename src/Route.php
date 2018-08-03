@@ -80,4 +80,11 @@ abstract class Route
         throw new RouterException('You cannot call this method. you have to override it');
     }
 
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
 }
