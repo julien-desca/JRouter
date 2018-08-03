@@ -25,6 +25,11 @@ abstract class Route
     protected $callable;
 
     /**
+     * @var string
+     */
+    protected $name;
+
+    /**
      * param of the request
      * @var array
      */
@@ -33,12 +38,14 @@ abstract class Route
     /**
      * Route constructor.
      * @param string $path Path of the route
-     * @param callable|string $callable  action to call
+     * @param callable|string $callable action to call
+     * @param null|string $name
      */
-    public function __construct(string $path, $callable)
+    public function __construct(string $path, $callable, ?string $name=null)
     {
         $this->path = trim($path, '/');
         $this->callable = $callable;
+        $this->name = $name;
     }
 
     /**

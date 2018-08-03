@@ -36,9 +36,9 @@ class Router
      * @return Route created Route
      * @throws RouterException
      */
-    public function get(string $path, $callable): Route
+    public function get(string $path, $callable, ?string $name=null): Route
     {
-        $route = $this->createRoute($path, $callable);
+        $route = $this->createRoute($path, $callable, $name);
         $this->routes["GET"][] = $route;
         return $route;
     }
@@ -50,8 +50,8 @@ class Router
      * @return Route created Route
      * @throws RouterException
      */
-    public function post(string $path, $callable){
-        $route = $this->createRoute($path, $callable);
+    public function post(string $path, $callable, ?string $name=null){
+        $route = $this->createRoute($path, $callable, $name);
         $this->routes["POST"][] = $route;
         return $route;
     }
@@ -63,8 +63,8 @@ class Router
      * @return Route
      * @throws RouterException
      */
-    public function put(string $path, $callable){
-        $route = $this->createRoute($path, $callable);
+    public function put(string $path, $callable, ?string $name=null){
+        $route = $this->createRoute($path, $callable, $name);
         $this->routes["PUT"][] = $route;
         return $route;
     }
@@ -76,8 +76,8 @@ class Router
      * @return Route
      * @throws RouterException
      */
-    public function delete(string $path, $callable){
-        $route = $this->createRoute($path, $callable);
+    public function delete(string $path, $callable, ?string $name=null){
+        $route = $this->createRoute($path, $callable, $name);
         $this->routes["DELETE"][] = $route;
         return $route;
     }
@@ -89,12 +89,12 @@ class Router
      * @return Route
      * @throws RouterException
      */
-    private function createRoute(string $path, $callable):Route{
+    private function createRoute(string $path, $callable, ?string $name=null):Route{
         $route = null;
         if (is_callable($callable)) {
-            $route = new RouteCallable($path, $callable);
+            $route = new RouteCallable($path, $callable, $name);
         } else if (gettype($callable) === 'string') {
-            $route = new RouteString($path, $callable);
+            $route = new RouteString($path, $callable,  $name);
         }
         else{
             throw new RouterException("bad callable type!");
