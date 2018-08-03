@@ -23,7 +23,7 @@ class RouterTest extends TestCase
     {
         $router = new Router("/foo/foufou");
         $router->get('', function(){return 'foo';}, 'test');
-        $this->assertNotEmpty($router->getRoutes()['GET']['test']);
+        $this->assertArrayHasKey('test', $router->getRoutes()['GET']);
     }
 
     public function testGetManyRoutes():void
