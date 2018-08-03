@@ -25,8 +25,6 @@ class Router
      */
     protected $routes = [];
 
-    private $allowedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
-
     public function __construct(string $url)
     {
         $this->url = $url;
@@ -113,9 +111,11 @@ class Router
      * @param string $method
      * @param Route $route
      * @param null|string $name
+     * @throws \Exception
      */
     private function registerRoute(string $method, Route $route, ?string $name = null)
     {
+        $this->checkRouteNotExists($name);
         $name ? $this->routes[$method][$name] = $route : $this->routes[$method][] = $route;
     }
 
@@ -138,6 +138,27 @@ class Router
             }
         }
         throw new RouteNotFoundException('No matching routes');
+    }
+
+    public function getRoutePath(string $routeName):string{
+         foreach ($this->routes as $route){
+             if(array_key_exists($routeName, $route)){
+                 return $route[$routeName]->getPath();
+             }
+         }
+         throw new RouteNotFoundException("no route named $routeName found");
+    }
+
+    private function checkRouteNotExists($name):void
+    {
+        if(!$name){
+            return;
+        }
+        foreach ($this->routes as $route){
+            if(array_key_exists($name,  $route)){
+                throw new \Exception();
+            }
+        }
     }
 
 }
